@@ -1,7 +1,7 @@
 # Plan de Conception & Roadmap : Cursor Soccer
 
 ## 1. Concept Global
-- **Genre :** Jeu de football / air-hockey tactique multijoueur (1v1, 2v2).
+- **Genre :** Jeu de football / air-hockey tactique multijoueur (1v1).
 - **Entités :** Les joueurs contrôlent des "Snakes" (un ensemble de segments de lignes lumineuses suivant une tête).
 - **Contrôles physiques :** 
   - La tête du snake pointe vers la souris, mais ne s'y téléporte pas.
@@ -35,6 +35,7 @@ L'objectif de cette phase est le **"Game Feel"**. Le code tourne uniquement dans
 - Particules à l'impact (balles/murs, balles/joueurs).
 - Déformation de la balle (Squash & Stretch).
 - Tremblement de caméra (Screen-shake) lors d'un gros impact ou d'un tir sprinté.
+- Point d'entrée sous forme de menu. Jeu hors ligne avec le bot dans /train
 
 ### Phase 3 : Infrastructure Serveur & Multijoueur Stricte
 - Création du monorepo et du serveur Node.js (Colyseus).
@@ -43,7 +44,8 @@ L'objectif de cette phase est le **"Game Feel"**. Le code tourne uniquement dans
 
 ### Phase 4 : Boucle de jeu, Matchmaking et Lobbies
 - Implémentation des règles de match (Score, Timer, Engagement au centre après un but).
-- Création des "Rooms" sur le serveur (1v1, 2v2).
+- Parties privées : système de room pour jouer avec ses amis (non ranked)
+- Parties classées : système de matchmaking pour jouer avec des inconnus
 - Menus React pour créer/rejoindre une partie (Lobby/Matchmaking).
 
 ### Phase 5 : Sécurité, Polish et Déploiement
