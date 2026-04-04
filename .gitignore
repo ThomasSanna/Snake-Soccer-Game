@@ -1,0 +1,63 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.serverless/
+.turbo/
+.antigravity/
+
+# Package-specific build outputs
+packages/*/dist/
+packages/*/out/
+packages/*/.turbo/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# IDE / Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Common temporary files
+.tmp/
+tmp/
+*.cjs (if they are temporary fix scripts like the ones we used)
+fix_ball.cjs
+fix_circular.cjs
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

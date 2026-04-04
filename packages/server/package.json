@@ -1,0 +1,9 @@
+{
+  "name": "@cursor-soccer/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"Server package scaffolded for Phase 3 (Colyseus)\""
+  }
+}

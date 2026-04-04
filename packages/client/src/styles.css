@@ -1,0 +1,24 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0, 196, 255, 0.2), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(57, 255, 20, 0.2), transparent 45%),
+    #070b14;
+}
+
+canvas {
+  display: block;
+}

@@ -1,0 +1,13 @@
+{
+  "name": "cursor-soccer",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @cursor-soccer/client",
+    "build": "npm run build -w @cursor-soccer/shared && npm run build -w @cursor-soccer/client",
+    "typecheck": "npm run typecheck -w @cursor-soccer/shared && npm run typecheck -w @cursor-soccer/client"
+  }
+}
