@@ -1,24 +1,353 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Global tokens & resets
+───────────────────────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap");
+
 :root {
   color-scheme: dark;
+
+  /* Brand palette */
+  --clr-bg:          #070b14;
+  --clr-surface:     rgba(255 255 255 / 0.04);
+  --clr-surface-hov: rgba(255 255 255 / 0.08);
+  --clr-border:      rgba(255 255 255 / 0.08);
+
+  --clr-cyan:        #16c6ff;
+  --clr-cyan-dim:    rgba(22 198 255 / 0.15);
+  --clr-orange:      #ff7f52;
+  --clr-orange-dim:  rgba(255 127 82 / 0.15);
+  --clr-purple:      #a78bfa;
+  --clr-purple-dim:  rgba(167 139 250 / 0.15);
+  --clr-white:       #f0f6ff;
+  --clr-muted:       rgba(240 246 255 / 0.45);
+
+  /* Typography */
+  --font-base: "Outfit", system-ui, sans-serif;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body,
 #app {
-  margin: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(0, 196, 255, 0.2), transparent 45%),
-    radial-gradient(circle at 80% 80%, rgba(57, 255, 20, 0.2), transparent 45%),
-    #070b14;
+  font-family: var(--font-base);
+  background: var(--clr-bg);
 }
 
 canvas {
   display: block;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Back-to-menu button (rendered over the Pixi canvas)
+───────────────────────────────────────────────────────────────────────────── */
+.back-btn {
+  position: fixed;
+  top: 18px;
+  left: 22px;
+  z-index: 100;
+  padding: 8px 18px;
+  background: rgba(255 255 255 / 0.06);
+  border: 1px solid rgba(255 255 255 / 0.14);
+  border-radius: 10px;
+  color: var(--clr-muted);
+  font-family: var(--font-base);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.back-btn:hover {
+  background: rgba(22 198 255 / 0.12);
+  border-color: var(--clr-cyan);
+  color: var(--clr-cyan);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Menu Scene root
+───────────────────────────────────────────────────────────────────────────── */
+#menu-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* fade-in / fade-out via JS class toggle */
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.35s var(--ease-out-expo),
+              transform 0.35s var(--ease-out-expo);
+}
+
+#menu-scene.menu-scene--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Animated ambient backdrop */
+.menu__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 15%, rgba(22 198 255 / 0.18), transparent 55%),
+    radial-gradient(ellipse 60% 60% at 82% 80%, rgba(167 139 250 / 0.18), transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255 127 82 / 0.08), transparent 60%),
+    var(--clr-bg);
+  animation: backdrop-pulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes backdrop-pulse {
+  0%   { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Menu content card
+───────────────────────────────────────────────────────────────────────────── */
+.menu__content {
+  position: relative;
+  z-index: 1;
+  width: min(520px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 52px 44px;
+  background: rgba(7 11 20 / 0.72);
+  border: 1px solid var(--clr-border);
+  border-radius: 28px;
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 0 0 1px rgba(255 255 255 / 0.04) inset,
+    0 32px 80px rgba(0 0 0 / 0.65),
+    0 0 60px rgba(22 198 255 / 0.06);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Header
+───────────────────────────────────────────────────────────────────────────── */
+.menu__header {
+  text-align: center;
+}
+
+.menu__logo-icon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 14px;
+  display: block;
+  animation: logo-float 3s ease-in-out infinite;
+}
+
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.menu__title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--clr-cyan) 0%, #fff 50%, var(--clr-orange) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.menu__subtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Navigation buttons
+───────────────────────────────────────────────────────────────────────────── */
+.menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Base button */
+.menu__btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 22px;
+  border-radius: 16px;
+  border: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+  color: var(--clr-white);
+  font-family: var(--font-base);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.22s,
+    border-color 0.22s,
+    transform 0.18s var(--ease-out-expo),
+    box-shadow 0.22s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer after hover */
+.menu__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255 255 255 / 0.06) 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.menu__btn:not(:disabled):hover::before {
+  transform: translateX(100%);
+}
+
+.menu__btn:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+.menu__btn:not(:disabled):active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Disabled state */
+.menu__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Training ── */
+.menu__btn--training {
+  border-color: rgba(22 198 255 / 0.25);
+}
+.menu__btn--training:not(:disabled):hover {
+  background: var(--clr-cyan-dim);
+  border-color: var(--clr-cyan);
+  box-shadow: 0 8px 32px rgba(22 198 255 / 0.2), 0 0 0 1px rgba(22 198 255 / 0.15) inset;
+}
+
+/* ── Ranked ── */
+.menu__btn--ranked {
+  border-color: rgba(255 127 82 / 0.2);
+}
+.menu__btn--ranked:not(:disabled):hover {
+  background: var(--clr-orange-dim);
+  border-color: var(--clr-orange);
+  box-shadow: 0 8px 32px rgba(255 127 82 / 0.2), 0 0 0 1px rgba(255 127 82 / 0.15) inset;
+}
+
+/* ── Private ── */
+.menu__btn--private {
+  border-color: rgba(167 139 250 / 0.2);
+}
+.menu__btn--private:not(:disabled):hover {
+  background: var(--clr-purple-dim);
+  border-color: var(--clr-purple);
+  box-shadow: 0 8px 32px rgba(167 139 250 / 0.2), 0 0 0 1px rgba(167 139 250 / 0.15) inset;
+}
+
+/* Button icon */
+.menu__btn-icon {
+  font-size: 1.7rem;
+  flex-shrink: 0;
+  line-height: 1;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Button text block */
+.menu__btn-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.menu__btn-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu__btn-desc {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--clr-muted);
+  letter-spacing: 0.01em;
+}
+
+/* Arrow */
+.menu__btn-arrow {
+  font-size: 1.5rem;
+  color: var(--clr-muted);
+  flex-shrink: 0;
+  transition: transform 0.18s var(--ease-out-expo), color 0.18s;
+}
+.menu__btn:not(:disabled):hover .menu__btn-arrow {
+  transform: translateX(4px);
+  color: var(--clr-white);
+}
+
+/* ── Coming soon badge ── */
+.menu__badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: rgba(255 255 255 / 0.08);
+  border: 1px solid rgba(255 255 255 / 0.12);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  vertical-align: middle;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Footer
+───────────────────────────────────────────────────────────────────────────── */
+.menu__footer {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--clr-muted);
+  letter-spacing: 0.04em;
+}
+
+.menu__footer kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  border: 1px solid rgba(255 255 255 / 0.15);
+  background: rgba(255 255 255 / 0.06);
+  font-family: var(--font-base);
+  font-size: 0.75rem;
+  font-weight: 600;
 }
