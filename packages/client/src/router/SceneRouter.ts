@@ -19,9 +19,9 @@ export class SceneRouter {
   }
 
   /** Navigate to a scene by mode identifier. */
-  go(mode: GameMode): void {
+  go(mode: GameMode, params?: any): void {
     this.current?.destroy();
-    this.current = this.factories[mode](this.root, (target) => this.go(target));
+    this.current = this.factories[mode](this.root, (target, p) => this.go(target, p), params);
     this.current.mount();
   }
 }
@@ -30,6 +30,7 @@ export class SceneRouter {
 export type SceneFactories = {
   [K in GameMode]: (
     root: HTMLElement,
-    navigate: (mode: GameMode) => void
+    navigate: (mode: GameMode, params?: any) => void,
+    params?: any
   ) => GameScene;
 };

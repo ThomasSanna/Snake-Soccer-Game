@@ -81,24 +81,22 @@ export class MenuScene implements GameScene {
             <span class="menu__btn-arrow" aria-hidden="true">›</span>
           </button>
 
-          <button id="btn-ranked" class="menu__btn menu__btn--ranked" type="button" disabled aria-disabled="true">
+          <button id="btn-ranked" class="menu__btn menu__btn--ranked" type="button">
             <span class="menu__btn-icon" aria-hidden="true">🏆</span>
             <span class="menu__btn-body">
               <span class="menu__btn-label">
                 Ranked
-                <span class="menu__badge">Soon</span>
               </span>
               <span class="menu__btn-desc">Compete online for glory</span>
             </span>
             <span class="menu__btn-arrow" aria-hidden="true">›</span>
           </button>
 
-          <button id="btn-private" class="menu__btn menu__btn--private" type="button" disabled aria-disabled="true">
+          <button id="btn-private" class="menu__btn menu__btn--private" type="button">
             <span class="menu__btn-icon" aria-hidden="true">🔒</span>
             <span class="menu__btn-body">
               <span class="menu__btn-label">
                 Private Party
-                <span class="menu__badge">Soon</span>
               </span>
               <span class="menu__btn-desc">Play with friends in a private lobby</span>
             </span>

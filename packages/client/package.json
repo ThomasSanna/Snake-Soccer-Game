@@ -9,8 +9,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@colyseus/sdk": "^0.17.39",
     "@cursor-soccer/shared": "0.1.0",
-    "colyseus.js": "^0.16.22",
     "pixi.js": "^7.4.2"
   },
   "devDependencies": {

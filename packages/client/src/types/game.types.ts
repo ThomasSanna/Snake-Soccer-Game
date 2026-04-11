@@ -13,7 +13,7 @@ export interface GameScene {
 
 // ─── Mode Identifiers ────────────────────────────────────────────────────────
 
-export type GameMode = "menu" | "training" | "ranked" | "private";
+export type GameMode = "menu" | "training" | "ranked" | "private" | "lobby" | "online";
 
 // ─── Visual FX ───────────────────────────────────────────────────────────────
 
